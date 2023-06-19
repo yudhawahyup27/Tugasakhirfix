@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Absensi</string>
+    <string name="mapbox_access_token">sk.eyJ1Ijoic2NyaXB0c29yY2VyZXIiLCJhIjoiY2xpZXdydXF3MGlrZTNmbmsxN2RxdG1meCJ9.T5CtD4SBjizESRoVg16d4w</string>
+</resources>

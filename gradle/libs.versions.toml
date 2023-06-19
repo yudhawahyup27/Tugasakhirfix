@@ -1,0 +1,61 @@
+[versions]
+accompanist-systemuicontroller = "0.31.2-alpha"
+agp = "8.2.0-alpha06"
+android = "10.13.0"
+firebase-ml-vision = "24.0.3"
+google-services = "4.3.15"
+hilt-android = "2.44"
+hilt-navigation-compose = "1.0.0"
+kotlin = "1.8.10"
+core-ktx = "1.9.0"
+junit = "4.13.2"
+androidx-test-ext-junit = "1.1.5"
+espresso-core = "3.5.1"
+lifecycle-runtime-ktx = "2.6.1"
+activity-compose = "1.7.0"
+compose-bom = "2023.03.00"
+liveness-camerax-android = "0.0.1"
+play-services-location = "21.0.1"
+
+[libraries]
+accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanist-systemuicontroller" }
+android = { module = "com.mapbox.maps:android", version.ref = "android" }
+androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hilt-navigation-compose" }
+core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
+firebase-ml-vision = { module = "com.google.firebase:firebase-ml-vision", version.ref = "firebase-ml-vision" }
+google-services = { module = "com.google.gms:google-services", version.ref = "google-services" }
+hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt-android" }
+hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt-android" }
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidx-test-ext-junit" }
+espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso-core" }
+lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycle-runtime-ktx" }
+activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activity-compose" }
+compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "compose-bom" }
+play-services-location = { module = "com.google.android.gms:play-services-location", version.ref = "play-services-location" }
+ui = { group = "androidx.compose.ui", name = "ui" }
+ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
+ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
+ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
+ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
+ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
+material3 = { group = "androidx.compose.material3", name = "material3" }
+androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version = "2.7.0-alpha01" }
+androidx-material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended", version = "1.5.0-beta01" }
+library = { group = "com.github.f0ris.sweetalert", name = "library", version = "1.6.2" }
+accompanist-adaptive = { group = "com.google.accompanist", name = "accompanist-adaptive", version = "0.31.3-beta" }
+accompanist-permissions = { group = "com.google.accompanist", name = "accompanist-permissions", version = "0.31.3-beta" }
+excelkt = { group = "io.github.evanrupert", name = "excelkt", version = "1.0.2" }
+liveness-camerax-android = { group = "com.github.arturschaefer", name = "liveness-camerax-android", version.ref = "liveness-camerax-android" }
+tensorflow-lite = { group = "org.tensorflow", name = "tensorflow-lite", version = "2.12.0" }
+tensorflow-lite-gpu = { group = "org.tensorflow", name = "tensorflow-lite-gpu", version = "2.12.0" }
+tensorflow-lite-gpu-api = { group = "org.tensorflow", name = "tensorflow-lite-gpu-api", version = "2.12.0" }
+tensorflow-lite-support = { group = "org.tensorflow", name = "tensorflow-lite-support", version = "0.4.2" }
+play-services-tflite-gpu = { group = "com.google.android.gms", name = "play-services-tflite-gpu", version = "16.1.0" }
+
+[plugins]
+androidApplication = { id = "com.android.application", version.ref = "agp" }
+kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+
+[bundles]
+
