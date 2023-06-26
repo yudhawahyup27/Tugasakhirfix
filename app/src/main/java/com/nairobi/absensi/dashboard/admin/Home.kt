@@ -29,6 +29,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -41,8 +42,10 @@ import androidx.navigation.NavController
 import com.nairobi.absensi.components.Orange
 import com.nairobi.absensi.components.Pink
 import com.nairobi.absensi.components.Purple
+import com.nairobi.absensi.components.successAlert
 import com.nairobi.absensi.components.warningAlert
 import com.nairobi.absensi.dashboard.DashboardActivity
+import com.nairobi.absensi.model.LeaveViewModel
 
 @Composable
 fun HomeCard(
@@ -106,12 +109,25 @@ fun HomeCard(
 }
 
 @Composable
-fun Home(navController: NavController) {
+fun Home(navController: NavController, viewModel: LeaveViewModel) {
     val context = LocalContext.current
     val modifier = Modifier
         .fillMaxWidth()
         .height(IntrinsicSize.Min)
         .padding(top = 20.dp)
+
+    LaunchedEffect("notification") {
+        viewModel.getLeaves {
+            val pending = viewModel.leaves.value.filter { it.status == "PENDING" }.size
+            if (pending != 0) {
+                successAlert(
+                    context,
+                    "Pemberitahuan",
+                    "Anda memiliki $pending permintaan cuti",
+                )
+            }
+        }
+    }
 
     Column(
         Modifier

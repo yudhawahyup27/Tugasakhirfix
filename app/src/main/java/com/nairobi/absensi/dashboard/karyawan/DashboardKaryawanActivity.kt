@@ -47,7 +47,7 @@ class DashboardKaryawanActivity : ComponentActivity() {
 
             NavHost(navController = navController, startDestination = "home") {
                 composable("home") {
-                    Home(navController)
+                    Home(navController, overtimeViewModel)
                 }
                 composable("leave") {
                     Leave(navController, leaveViewModel)

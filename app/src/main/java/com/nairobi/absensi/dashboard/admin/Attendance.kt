@@ -4,7 +4,9 @@ import android.os.Build
 import androidx.activity.compose.BackHandler
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -17,10 +19,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.nairobi.absensi.components.AppBar
 import com.nairobi.absensi.components.ErrorScreen
@@ -74,6 +78,26 @@ fun Attendance(navController: NavController, attendanceViewModel: AttendanceView
                     onDateChange = { date = it },
                     text = text,
                     onTextChange = { text = it }
+                )
+            }
+            val leaveCount = attendances.filter { it.status == "LEAVE" }.size
+            val notWork =
+                attendances.filter { it.status != "CHECKIN" && it.status != "CHECKOUT" && it.status != "LEAVE" }.size
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier
+                    .padding(horizontal = 16.dp)
+                    .fillMaxWidth()
+                    .padding(bottom = 20.dp)
+            ) {
+                Text(
+                    text = "Cuti: $leaveCount",
+                    fontSize = 18.sp
+                )
+                Text(
+                    text = "Bolos: $notWork",
+                    fontSize = 18.sp
                 )
             }
             Column(

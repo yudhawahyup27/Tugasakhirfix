@@ -25,6 +25,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.paint
@@ -42,8 +43,10 @@ import com.nairobi.absensi.R
 import com.nairobi.absensi.components.Orange
 import com.nairobi.absensi.components.Pink
 import com.nairobi.absensi.components.Purple
+import com.nairobi.absensi.components.successAlert
 import com.nairobi.absensi.components.warningAlert
 import com.nairobi.absensi.dashboard.DashboardActivity
+import com.nairobi.absensi.model.OvertimeViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -109,8 +112,21 @@ fun HomeCard(
 }
 
 @Composable
-fun Home(navController: NavController) {
+fun Home(navController: NavController, viewModel: OvertimeViewModel) {
     val context = LocalContext.current
+
+    LaunchedEffect("notification") {
+        viewModel.getOvertimes {
+            val pending = viewModel.overtimes.value.filter { it.status == "PENDING" }
+            if (pending.isNotEmpty()) {
+                successAlert(
+                    context,
+                    "Pemberitahuan",
+                    "Kamu memiliki tugas lembur hari ini",
+                )
+            }
+        }
+    }
 
     Column(
         modifier = Modifier
