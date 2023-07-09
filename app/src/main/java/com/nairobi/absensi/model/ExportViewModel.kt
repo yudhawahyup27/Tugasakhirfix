@@ -7,10 +7,12 @@ import androidx.lifecycle.viewModelScope
 import com.nairobi.absensi.data.Attendance
 import com.nairobi.absensi.data.Leave
 import com.nairobi.absensi.data.Overtime
+import com.nairobi.absensi.data.User
 import com.nairobi.absensi.repo.AttendanceRepository
 import com.nairobi.absensi.repo.LeaveRepository
 import com.nairobi.absensi.repo.OvertimeRepository
 import com.nairobi.absensi.repo.StorageRepository
+import com.nairobi.absensi.repo.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -21,10 +23,12 @@ class ExportViewModel @Inject constructor(
     private val overtimeRepository: OvertimeRepository,
     private val leaveRepository: LeaveRepository,
     private val storageRepository: StorageRepository,
+    private val userRepository: UserRepository,
 ) : ViewModel() {
     val attendances: MutableState<List<Attendance>> = mutableStateOf(emptyList())
     val overtimes: MutableState<List<Overtime>> = mutableStateOf(emptyList())
     val leaves: MutableState<List<Leave>> = mutableStateOf(emptyList())
+    val users: MutableState<List<User>> = mutableStateOf(emptyList())
     val loading: MutableState<Boolean> = mutableStateOf(false)
     val loaded: MutableState<Boolean> = mutableStateOf(false)
 
@@ -34,6 +38,7 @@ class ExportViewModel @Inject constructor(
             attendances.value = attendanceRepository.getAttendances().data ?: emptyList()
             overtimes.value = overtimeRepository.getOvertimes().data ?: emptyList()
             leaves.value = leaveRepository.getLeaves().data ?: emptyList()
+            users.value = userRepository.getUsersWhere("role", "KARYAWAN").data ?: emptyList()
             loading.value = false
             loaded.value = true
         }

@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "220009561927",
-    "project_id": "absen-1dc50",
-    "storage_bucket": "absen-1dc50.appspot.com"
+    "project_number": "996068528477",
+    "project_id": "absensi-26254",
+    "storage_bucket": "absensi-26254.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:220009561927:android:2770e321b5c9bcc9a91662",
+        "mobilesdk_app_id": "1:996068528477:android:950d47c97b459b3d4758b4",
         "android_client_info": {
           "package_name": "com.nairobi.absensi"
         }
       },
       "oauth_client": [
         {
-          "client_id": "220009561927-jjlphkeuk6fqo8re54ito42gaj8k583t.apps.googleusercontent.com",
+          "client_id": "996068528477-l7s1fhrkvh9gv4bnaviq7jiico4b6mct.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBQN_BjP3EdXco47URVbcdqHRwEj3ntTdA"
+          "current_key": "AIzaSyDOl1anB8hdYtjjAMprxhJGZ1YOB50VY6w"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "220009561927-jjlphkeuk6fqo8re54ito42gaj8k583t.apps.googleusercontent.com",
+              "client_id": "996068528477-l7s1fhrkvh9gv4bnaviq7jiico4b6mct.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

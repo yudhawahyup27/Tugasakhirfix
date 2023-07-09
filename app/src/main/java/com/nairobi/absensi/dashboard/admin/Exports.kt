@@ -12,8 +12,13 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
+import androidx.compose.material.icons.filled.People
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -129,6 +134,7 @@ fun overtimeExcel(overtimes: List<Overtime>): ByteArray {
     return file.readBytes()
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Exports(navController: NavController, exportViewModel: ExportViewModel) {
     val context = LocalContext.current
@@ -151,9 +157,12 @@ fun Exports(navController: NavController, exportViewModel: ExportViewModel) {
         val attendances = exportViewModel.attendances.value
         val overtimes = exportViewModel.overtimes.value
         val leaves = exportViewModel.leaves.value
+        val users = exportViewModel.users.value
 
         var start by remember { mutableStateOf(Date()) }
         var end by remember { mutableStateOf(Date()) }
+        var user by remember { mutableStateOf<String>("") }
+        var expanded by remember { mutableStateOf(false) }
 
         Column(
             Modifier
@@ -167,16 +176,22 @@ fun Exports(navController: NavController, exportViewModel: ExportViewModel) {
                     .padding(16.dp)
             ) {
                 val filteredAttendances = attendances.filter {
-                    isSameDay(it.date, start) || isSameDay(it.date, end) ||
+                    val df = isSameDay(it.date, start) || isSameDay(it.date, end) ||
                             isBetween(it.date, start, end)
+                    val uf = user == "" || user == it.userId
+                    df && uf
                 }
                 val filteredOvertimes = overtimes.filter {
-                    isSameDay(it.startTime, start) || isSameDay(it.startTime, end) ||
+                    val df = isSameDay(it.startTime, start) || isSameDay(it.startTime, end) ||
                             isBetween(it.startTime, start, end)
+                    val uf = user == "" || user == it.userId
+                    df && uf
                 }
                 val filteredLeaves = leaves.filter {
-                    isSameDay(it.start, start) || isSameDay(it.start, end) ||
+                    val df = isSameDay(it.start, start) || isSameDay(it.start, end) ||
                             isBetween(it.start, start, end)
+                    val uf = user == "" || user == it.userId
+                    df && uf
                 }
                 FormText(
                     text = formatDate(start, "dd MMMM yyyy"),
@@ -208,6 +223,45 @@ fun Exports(navController: NavController, exportViewModel: ExportViewModel) {
                             }
                         }
                 )
+                ExposedDropdownMenuBox(
+                    expanded,
+                    onExpandedChange = { expanded = !expanded },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 16.dp)
+                    ) {
+                    FormText(
+                        text = users.find { it.id == user }?.name ?: "Semua",
+                        label = "Karyawan",
+                        leadingIcon = {
+                            Icon(
+                                Icons.Default.People,
+                                contentDescription = "User",
+                            )
+                        },
+                        trailingIcon = {
+                            ExposedDropdownMenuDefaults.TrailingIcon(expanded)
+                        },
+                        disabled = true,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .menuAnchor(),
+                    )
+                    ExposedDropdownMenu(expanded, onDismissRequest = { expanded = false }) {
+                        exportViewModel.users.value.forEach { v ->
+                            DropdownMenuItem(
+                                text = {Column(Modifier.fillMaxWidth()) {
+                                    Text(text = v.name)
+                                    Text(v.email, color = Color.Gray)
+                                }},
+                                onClick = {
+                                    user = v.id
+                                    expanded = false
+                                }
+                            )
+                        }
+                    }
+                }
                 Button(
                     onClick = {
                         val bytes = attendanceExcel(filteredAttendances)
