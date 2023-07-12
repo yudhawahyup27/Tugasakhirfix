@@ -7,9 +7,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nairobi.absensi.data.Attendance
 import com.nairobi.absensi.data.CheckinCheckoutState
+import com.nairobi.absensi.data.EarlyCheckout
 import com.nairobi.absensi.data.Office
 import com.nairobi.absensi.data.User
 import com.nairobi.absensi.repo.AttendanceRepository
+import com.nairobi.absensi.repo.EarlyCheckoutRepository
 import com.nairobi.absensi.repo.HolidayRepository
 import com.nairobi.absensi.repo.OfficeRepository
 import com.nairobi.absensi.repo.StorageRepository
@@ -26,10 +28,12 @@ class AttendanceViewModel @Inject constructor(
     private val officeRepository: OfficeRepository,
     private val storageRepository: StorageRepository,
     private val holidayRepository: HolidayRepository,
+    private val earlyCheckoutRepository: EarlyCheckoutRepository,
 ) : ViewModel() {
     val users: MutableState<List<User>> = mutableStateOf(emptyList())
     val user: MutableState<User?> = mutableStateOf(null)
     val attendances: MutableState<List<Attendance>> = mutableStateOf(emptyList())
+    val earlyCheckouts: MutableState<List<EarlyCheckout>> = mutableStateOf(emptyList())
     val error: MutableState<String?> = mutableStateOf(null)
     val loading: MutableState<Boolean> = mutableStateOf(false)
     val office: MutableState<Office?> = mutableStateOf(null)
@@ -98,6 +102,10 @@ class AttendanceViewModel @Inject constructor(
                 "userId",
                 user.value?.id ?: ""
             ).data ?: emptyList()
+            earlyCheckouts.value = earlyCheckoutRepository.getEarlyCheckoutsWhere(
+                "userId",
+                user.value?.id ?: ""
+            ).data ?: emptyList()
             office.value = officeRepository.getOffice()
             holidays.value = holidayRepository.getHolidays().data ?: emptyList()
             face.value = storageRepository.getBitmap(user.value!!.face!!).data
@@ -163,10 +171,31 @@ class AttendanceViewModel @Inject constructor(
         }
     }
 
+    fun getEarlyCheckouts(onFinish: () -> Unit = {}) {
+        viewModelScope.launch {
+            loading.value = true
+            val result = earlyCheckoutRepository.getEarlyCheckouts()
+            earlyCheckouts.value = result.data ?: emptyList()
+            error.value = result.error
+            loading.value = false
+            onFinish()
+        }
+    }
+
     fun addAttendance(attendance: Attendance, onFinish: () -> Unit = {}) {
         viewModelScope.launch {
             loading.value = true
             val result = attendanceRepository.addAttendance(attendance)
+            error.value = result.error
+            loading.value = false
+            onFinish()
+        }
+    }
+
+    fun addEarlyCheckout(earlyCheckout: EarlyCheckout, onFinish: () -> Unit = {}) {
+        viewModelScope.launch {
+            loading.value = true
+            val result = earlyCheckoutRepository.addEarlyCheckout(earlyCheckout)
             error.value = result.error
             loading.value = false
             onFinish()
@@ -183,10 +212,30 @@ class AttendanceViewModel @Inject constructor(
         }
     }
 
+    fun updateEarlyCheckout(earlyCheckout: EarlyCheckout, onFinish: () -> Unit = {}) {
+        viewModelScope.launch {
+            loading.value = true
+            val result = earlyCheckoutRepository.updateEarlyCheckout(earlyCheckout)
+            error.value = result.error
+            loading.value = false
+            onFinish()
+        }
+    }
+
     fun deleteAttendance(attendance: Attendance, onFinish: () -> Unit = {}) {
         viewModelScope.launch {
             loading.value = true
             val result = attendanceRepository.deleteAttendance(attendance)
+            error.value = result.error
+            loading.value = false
+            onFinish()
+        }
+    }
+
+    fun deleteEarlyCheckout(earlyCheckout: EarlyCheckout, onFinish: () -> Unit = {}) {
+        viewModelScope.launch {
+            loading.value = true
+            val result = earlyCheckoutRepository.deleteEarlyCheckout(earlyCheckout)
             error.value = result.error
             loading.value = false
             onFinish()

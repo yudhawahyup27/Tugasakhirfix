@@ -45,7 +45,9 @@ import com.nairobi.absensi.components.Purple
 import com.nairobi.absensi.components.successAlert
 import com.nairobi.absensi.components.warningAlert
 import com.nairobi.absensi.dashboard.DashboardActivity
+import com.nairobi.absensi.model.AttendanceViewModel
 import com.nairobi.absensi.model.LeaveViewModel
+import com.nairobi.absensi.utils.isToday
 
 @Composable
 fun HomeCard(
@@ -109,7 +111,7 @@ fun HomeCard(
 }
 
 @Composable
-fun Home(navController: NavController, viewModel: LeaveViewModel) {
+fun Home(navController: NavController, viewModel: LeaveViewModel, viewModel2: AttendanceViewModel) {
     val context = LocalContext.current
     val modifier = Modifier
         .fillMaxWidth()
@@ -124,6 +126,21 @@ fun Home(navController: NavController, viewModel: LeaveViewModel) {
                     context,
                     "Pemberitahuan",
                     "Anda memiliki $pending permintaan cuti",
+                )
+            }
+        }
+        viewModel2.getEarlyCheckouts {
+            val pending = viewModel2.earlyCheckouts.value.filter { it.status == "PENDING" && isToday(it.date) }.size
+            if (pending != 0) {
+                successAlert(
+                    context,
+                    "Pemberitahuan",
+                    "Anda memiliki $pending permintaan pulang lebih awal",
+                    {
+                        navController.navigate("early")
+                    },
+                    "Lihat",
+                    true
                 )
             }
         }

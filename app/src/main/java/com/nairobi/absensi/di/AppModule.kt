@@ -57,6 +57,13 @@ object AppModule {
 
     @Provides
     @Singleton
+    @Named("earlyCheckoutCollection")
+    fun provideEarlyCheckoutCollection(): CollectionReference {
+        return FirebaseFirestore.getInstance().collection("earlyCheckouts")
+    }
+
+    @Provides
+    @Singleton
     fun provideHolidayApi(): String {
         return "https://api-harilibur.vercel.app/api"
     }

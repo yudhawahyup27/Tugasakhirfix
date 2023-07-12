@@ -11,6 +11,7 @@ import androidx.navigation.NavController
 import com.nairobi.absensi.components.ProgressScreen
 import com.nairobi.absensi.components.errorAlert
 import com.nairobi.absensi.components.successAlert
+import com.nairobi.absensi.data.EarlyCheckout
 import com.nairobi.absensi.model.AttendanceViewModel
 import com.nairobi.absensi.utils.formatDate
 import com.nairobi.absensi.utils.isToday
@@ -61,7 +62,45 @@ fun Checkout(navController: NavController, attendanceViewModel: AttendanceViewMo
                             end,
                             "HH:mm"
                         )
-                    }"
+                    }",
+                    {
+                        val current = attendanceViewModel.earlyCheckouts.value.find { isToday(it.date) }
+                        if (current != null) {
+                            errorAlert(
+                                context = context,
+                                "Checkout Gagal",
+                                "Anda sudah mengajukan izin pulang awal"
+                            ) {
+                                navController.popBackStack()
+                            }
+                        } else {
+                            val early = EarlyCheckout(
+                                userId = attendanceViewModel.user.value!!.id,
+                                date = Date(),
+                            )
+                            attendanceViewModel.addEarlyCheckout(early) {
+                                if (attendanceViewModel.error.value != null) {
+                                    errorAlert(
+                                        context = context,
+                                        "Checkout Gagal",
+                                        attendanceViewModel.error.value!!
+                                    ) {
+                                        navController.popBackStack()
+                                    }
+                                } else {
+                                    successAlert(
+                                        context = context,
+                                        "Checkout Berhasil",
+                                        "Anda telah mengajukan izin pulang awal"
+                                    ) {
+                                        navController.popBackStack()
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "Izin pulang awal",
+                    true,
                 ) {
                     navController.popBackStack()
                 }

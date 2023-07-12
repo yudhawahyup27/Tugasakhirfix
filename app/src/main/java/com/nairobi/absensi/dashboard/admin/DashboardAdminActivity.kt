@@ -64,7 +64,7 @@ class DashboardAdminActivity : ComponentActivity() {
             } else {
                 NavHost(navController = navController, startDestination = "home") {
                     composable("home") {
-                        Home(navController, leaveViewModel)
+                        Home(navController, leaveViewModel, attendanceViewModel)
                     }
                     composable("admin") {
                         Admin(navController, userViewModel)
@@ -98,6 +98,9 @@ class DashboardAdminActivity : ComponentActivity() {
                     }
                     composable("exports") {
                         Exports(navController, exportViewModel)
+                    }
+                    composable("early") {
+                        Early(navController, attendanceViewModel)
                     }
                 }
             }
