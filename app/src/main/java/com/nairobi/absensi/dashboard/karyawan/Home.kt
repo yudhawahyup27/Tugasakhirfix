@@ -46,7 +46,10 @@ import com.nairobi.absensi.components.Purple
 import com.nairobi.absensi.components.successAlert
 import com.nairobi.absensi.components.warningAlert
 import com.nairobi.absensi.dashboard.DashboardActivity
+import com.nairobi.absensi.model.AttendanceViewModel
 import com.nairobi.absensi.model.OvertimeViewModel
+import com.nairobi.absensi.utils.isToday
+import java.util.Date
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -112,7 +115,11 @@ fun HomeCard(
 }
 
 @Composable
-fun Home(navController: NavController, viewModel: OvertimeViewModel) {
+fun Home(
+    navController: NavController,
+    viewModel: OvertimeViewModel,
+    viewModel2: AttendanceViewModel
+) {
     val context = LocalContext.current
 
     LaunchedEffect("notification") {
@@ -124,6 +131,19 @@ fun Home(navController: NavController, viewModel: OvertimeViewModel) {
                     "Pemberitahuan",
                     "Kamu memiliki tugas lembur hari ini",
                 )
+            }
+        }
+        viewModel2.prepareCheckInCheckOut {
+            viewModel2.getAttendances {
+                val pending = viewModel2.attendances.value.filter { it.status == "CHECKIN" }
+                pending.forEach { attendance ->
+                    val close = viewModel2.office.value!!.closeTime
+                    if (isToday(attendance.date) && Date().after(close)) {
+                        attendance.status = "CHECKOUT"
+                        attendance.checkOut = close
+                        viewModel2.updateAttendance(attendance)
+                    }
+                }
             }
         }
     }

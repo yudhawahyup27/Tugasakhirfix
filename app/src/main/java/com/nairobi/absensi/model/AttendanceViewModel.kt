@@ -92,7 +92,7 @@ class AttendanceViewModel @Inject constructor(
         }
     }
 
-    fun prepareCheckInCheckOut() {
+    fun prepareCheckInCheckOut(cb: () -> Unit = {}) {
         viewModelScope.launch {
             if (checkinCheckoutPrepared.value) {
                 return@launch
@@ -112,6 +112,7 @@ class AttendanceViewModel @Inject constructor(
             checkinCheckoutPrepared.value = true
             checkinCheckoutState.value = CheckinCheckoutState.START
             loading.value = false
+            cb()
         }
     }
 
