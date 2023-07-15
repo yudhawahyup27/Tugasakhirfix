@@ -76,6 +76,9 @@ class AttendanceViewModel @Inject constructor(
             if (attendances.value.size != attendanceRepository.countAttendances()) {
                 getAttendances()
             }
+            if (earlyCheckouts.value.size != earlyCheckoutRepository.countEarlyCheckout()) {
+                getEarlyCheckouts()
+            }
         }
     }
 
@@ -111,8 +114,8 @@ class AttendanceViewModel @Inject constructor(
             face.value = storageRepository.getBitmap(user.value!!.face!!).data
             checkinCheckoutPrepared.value = true
             checkinCheckoutState.value = CheckinCheckoutState.START
-            loading.value = false
             cb()
+            loading.value = false
         }
     }
 

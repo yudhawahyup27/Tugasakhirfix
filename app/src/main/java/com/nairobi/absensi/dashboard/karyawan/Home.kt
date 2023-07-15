@@ -137,7 +137,9 @@ fun Home(
             viewModel2.getAttendances {
                 val pending = viewModel2.attendances.value.filter { it.status == "CHECKIN" }
                 pending.forEach { attendance ->
-                    val close = viewModel2.office.value!!.closeTime
+                    val closeTime = viewModel2.office.value!!.closeTime
+                    val close = Date()
+                    close.hours = closeTime.hours
                     if (isToday(attendance.date) && Date().after(close)) {
                         attendance.status = "CHECKOUT"
                         attendance.checkOut = close
