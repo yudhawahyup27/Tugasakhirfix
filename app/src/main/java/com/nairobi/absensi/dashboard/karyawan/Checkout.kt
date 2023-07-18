@@ -39,7 +39,17 @@ fun Checkout(navController: NavController, attendanceViewModel: AttendanceViewMo
         lock = true
         val checkIn =
             attendanceViewModel.attendances.value.find { it.status == "CHECKIN" && isToday(it.date) }
-        if (checkIn == null) {
+        val checkOut =
+            attendanceViewModel.attendances.value.find { it.status == "CHECKOUT" && isToday(it.date) }
+        if (checkOut != null) {
+            errorAlert(
+                context = context,
+                "Checkout Gagal",
+                "Anda sudah checkout"
+            ) {
+                navController.popBackStack()
+            }
+        } else if (checkIn == null) {
             errorAlert(
                 context = context,
                 "Checkout Gagal",
@@ -64,7 +74,8 @@ fun Checkout(navController: NavController, attendanceViewModel: AttendanceViewMo
                         )
                     }",
                     {
-                        val current = attendanceViewModel.earlyCheckouts.value.find { isToday(it.date) }
+                        val current =
+                            attendanceViewModel.earlyCheckouts.value.find { isToday(it.date) }
                         if (current != null) {
                             errorAlert(
                                 context = context,
